@@ -233,26 +233,6 @@ local schemas = {
             end
         end,
     },
-    -- Test index part with 'collation_id' option (as in net.box's
-    -- response).
-    {
-        name = 'collation_id',
-        parts = {
-            {
-                fieldno = 1,
-                type = 'string',
-                collation_id = 2, -- unicode_ci
-            },
-        },
-        gen_tuple = function(i)
-            local letters = {'a', 'b', 'c', 'A', 'B', 'C'}
-            if i <= #letters then
-                return {letters[i]}
-            else
-                return {''}
-            end
-        end,
-    },
     -- Test index part with 'collation' option (as in local index
     -- parts).
     {
