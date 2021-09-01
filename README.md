@@ -50,7 +50,7 @@ At the moment of writing, supported Tarantool versions are:
 The older tarantool versions are not supported, because they
 lack of necessary `module api` headers.
 
-## When you need to use module, ad not built-in module?
+## When you need to use module, and not built-in module?
 
 The key difference here - it works not only for all supported 
 2.x versions (where we do have builtin `merger` module), but also
