@@ -3,7 +3,7 @@ version = 'scm-1'
 
 -- url and branch of the package's repository at GitHub
 source  = {
-    url    = 'git://github.com/tarantool/tuple-merger.git',
+    url    = 'git+https://github.com/tarantool/tuple-merger.git',
     branch = 'master',
 }
 
