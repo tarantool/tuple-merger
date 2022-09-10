@@ -41,3 +41,4 @@ jobs:
       - run: |
           ./test/merger-test.lua
           ./test/hotreload-test.lua
+          ./test/gh-29-merger-use-after-free-in-gen-test.lua
