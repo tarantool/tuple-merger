@@ -312,6 +312,7 @@ luaT_merger_new_parse_sources(struct lua_State *L, int idx,
 	}
 
 	/* Save all sources. */
+	int top = lua_gettop(L);
 	for (uint32_t i = 0; i < source_count; ++i) {
 		lua_pushinteger(L, i + 1);
 		lua_gettable(L, idx);
@@ -325,7 +326,7 @@ luaT_merger_new_parse_sources(struct lua_State *L, int idx,
 		}
 		sources[i] = source;
 	}
-	lua_pop(L, source_count);
+	lua_settop(L, top);
 
 	*source_count_ptr = source_count;
 	return sources;
