@@ -18,7 +18,13 @@ jobs:
 
   publish-tag:
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    # There are problems with current version of the
+    # setup-tarantool action on Ubuntu Jammy (ubuntu-latest or
+    # ubuntu-22.04). Use Ubuntu Focal (ubuntu-20.04) until they
+    # will be resolved. See [1] for details.
+    #
+    # [1]: https://github.com/tarantool/setup-tarantool/issues/36
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
