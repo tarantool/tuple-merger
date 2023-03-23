@@ -48,6 +48,7 @@
 #include "compat/utils.h"
 
 #include "merger-source.h" /* merge_source_*, merger_*() */
+#include "version.h"
 
 static uint32_t CTID_STRUCT_KEY_DEF_REF = 0;
 static uint32_t CTID_STRUCT_TUPLE_KEYDEF_PTR = 0;
@@ -1302,6 +1303,10 @@ luaopen_tuple_merger(struct lua_State *L)
 	size_t len = sizeof(meta) / sizeof(meta[0]);
 	lua_createtable(L, 0, len - 1);
 	luaL_register(L, NULL, meta);
+
+	/* Add _VERSION to the module table. */
+	lua_pushstring(L, TUPLE_MERGER_VERSION);
+	lua_setfield(L, -2, "_VERSION");
 
 	/* Add internal.{select,ipairs}(). */
 	lua_newtable(L); /* merger.internal */
