@@ -50,6 +50,18 @@
 #include "merger-source.h" /* merge_source_*, merger_*() */
 #include "version.h"
 
+/**
+ * MsgPack extension types, copied from
+ * `tarantool/src/lib/core/mp_extension_types.h`.
+ */
+enum mp_extension_type {
+	/**
+	 * Extension for encoding Tarantool box tuples returned from CRUD
+	 * methods or remote procedure calls.
+	 */
+	MP_TUPLE = 7,
+};
+
 static uint32_t CTID_STRUCT_KEY_DEF_REF = 0;
 static uint32_t CTID_STRUCT_TUPLE_KEYDEF_PTR = 0;
 static uint32_t CTID_STRUCT_TUPLE_MERGE_SOURCE_REF = 0;
@@ -597,6 +609,22 @@ luaL_merge_source_buffer_next(struct merge_source *base,
 	*rpos = (char *)tuple_end;
 	if (format == NULL)
 		format = box_tuple_format_default();
+	/*
+	 * If we encounter an MP_TUPLE, skip the extension header and the tuple
+	 * format identifier.
+	 */
+	if (mp_typeof(*tuple_beg) == MP_EXT) {
+		int8_t type;
+		mp_decode_extl(&tuple_beg, &type);
+		if (type != MP_TUPLE) {
+			diag_set_illegal("Unexpected MsgPack extension type "
+					 "(should be MP_TUPLE)");
+			return -1;
+		}
+		assert(mp_typeof(*tuple_beg) == MP_UINT);
+		/* Skip the tuple format identifier. */
+		mp_decode_uint(&tuple_beg);
+	}
 	box_tuple_t *tuple = box_tuple_new(format, tuple_beg, tuple_end);
 	if (tuple == NULL)
 		return -1;
