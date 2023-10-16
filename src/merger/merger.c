@@ -597,6 +597,19 @@ luaL_merge_source_buffer_next(struct merge_source *base,
 	*rpos = (char *)tuple_end;
 	if (format == NULL)
 		format = box_tuple_format_default();
+	/*
+	 * If we encounter an MP_TUPLE, skip the extension header and the tuple
+	 * format identifier.
+	 */
+	if (mp_typeof(*tuple_beg) == MP_EXT) {
+		uint32_t len;
+		int8_t type;
+		mp_decode_ext(&tuple_beg, &type, &len);
+		assert(tuple_beg + len == tuple_end);
+		assert(mp_typeof(*tuple_beg) == MP_UINT);
+		/* Skip the tuple format identifier. */
+		mp_decode_uint(&tuple_beg);
+	}
 	box_tuple_t *tuple = box_tuple_new(format, tuple_beg, tuple_end);
 	if (tuple == NULL)
 		return -1;
