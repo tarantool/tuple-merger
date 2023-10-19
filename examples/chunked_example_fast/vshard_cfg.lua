@@ -46,12 +46,12 @@ end
 function vshard_cfg.wait_cfg()
     local instance_uuid_1 = wait_uuid('storage_1.instance.uuid')
     local instance_uuid_2 = wait_uuid('storage_2.instance.uuid')
-    local cluster_uuid_1 = wait_uuid('storage_1.cluster.uuid')
-    local cluster_uuid_2 = wait_uuid('storage_2.cluster.uuid')
+    local replicaset_uuid_1 = wait_uuid('storage_1.replicaset.uuid')
+    local replicaset_uuid_2 = wait_uuid('storage_2.replicaset.uuid')
 
     return {
         sharding = {
-            [cluster_uuid_1] = {
+            [replicaset_uuid_1] = {
                 replicas = {
                     [instance_uuid_1] = {
                         uri = 'guest:@localhost:3301',
@@ -60,7 +60,7 @@ function vshard_cfg.wait_cfg()
                     }
                 }
             },
-            [cluster_uuid_2] = {
+            [replicaset_uuid_2] = {
                 replicas = {
                     [instance_uuid_2] = {
                         uri = 'guest:@localhost:3302',
