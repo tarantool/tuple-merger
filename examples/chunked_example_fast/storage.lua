@@ -50,7 +50,11 @@ box.once('init_storage', function()
 end)
 
 fio_write(instance_name .. '.instance.uuid', box.info.uuid)
-fio_write(instance_name .. '.cluster.uuid', box.info.cluster.uuid)
+local replicaset_uuid = box.info.replicaset and box.info.replicaset.uuid or nil
+if replicaset_uuid == nil then
+    replicaset_uuid = box.info.cluster.uuid
+end
+fio_write(instance_name .. '.replicaset.uuid', replicaset_uuid)
 
 -- Initialize vshard storage.
 _G.vshard = vshard
