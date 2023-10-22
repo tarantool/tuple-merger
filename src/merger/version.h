@@ -5,6 +5,6 @@
 * Requires manual update in case of release commit.
 */
 
-#define TUPLE_MERGER_VERSION "0.0.4"
+#define TUPLE_MERGER_VERSION "0.0.5"
 
 #endif /* TUPLE_MERGER_VERSION_H_INCLUDED */
